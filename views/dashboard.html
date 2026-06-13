@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ankit Coaching Classes Dashboard</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<style>
+    p{
+        text-align: center;
+        font-size: 18px;
+        color: #333;
+    }
+</style>
+<body><header class="header">
+    <h1>Ankit Coaching Classes</h1>
+    <p>Rewa, Madhya Pradesh</p>
+</header><nav class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/attendance">Attendance</a>
+    <a href="/fees">Fees</a>
+    <a href="/notice">Notes</a>
+    <a href="/results">Results</a>
+    <a href="/logout">Logout</a>
+    <a href="/add-student">Add Student</a>
+    <a href="/notice-board">Notice Board</a>
+    <a href="/student-identity">Student Identity Card</a>
+    <a href="/id-card">ID Card</a>
+    <a href="/certificate">Certificate</a>
+
+</nav><div class="container"><h2>Student Dashboard</h2><div class="dashboard-grid"><div class="card">
+    <h3>📊 Quick Stats</h3>
+    <p>Total Students: <span id="totalStudents">0</span></p>
+    <p>Total Attendance: <span id="totalAttendance">0</span></p>
+    <p>Present Students: <span id="totalPresent">0</span></p>
+    <p>Absent Students: <span id="totalAbsent">0</span></p>
+</div>
+
+<div class="card">
+    <h3>📅 Today's Attendance</h3>
+    <p>Total Today: <span id="totalToday">0</span></p>
+    <p>Present Today: <span id="presentToday">0</span></p>
+    <p>Absent Today: <span id="absentToday">0</span></p>
+</div>
+
+<div class="card">
+    <h3>👨‍🎓 Student Profile</h3>
+    <p>Name : Student Name</p>
+    <p>Class : 10th</p>
+    <p>Mobile : 8085582499</p>
+    <p>Email : student@gmail.com</p>
+</div>
+
+<div class="card">
+    <h3>📚 Course Details</h3>
+    <p>Classes : 1st to 10th</p>
+    <p>Duration : 1 Year</p>
+    <p>Fee : ₹1000 / Month</p>
+</div>
+
+<div class="card">
+    <h3>📅 Attendance</h3>
+    <p>Present : 20 Days</p>
+    <p>Absent : 2 Days</p>
+</div>
+
+<div class="card">
+    <h3>💰 Fee Statistics</h3>
+    <p>Total Fees Records: <span id="totalFeesRecords">0</span></p>
+    <p>Total Fees Collected: <span id="totalFeesCollected">0</span></p>
+</div>
+
+<div class="card">
+    <h3>📖 Notes</h3>
+    <button>Download Notes</button>
+</div>
+
+<div class="card">
+    <h3>📊 Results</h3>
+    <button>View Result</button>
+</div>
+
+</div><div class="card" style="margin-top:20px;">
+    <h3>🔍 Search Student</h3><input
+    type="text"
+    id="searchInput"
+    placeholder="Enter Student Name"
+    style="width:100%;padding:10px;margin-top:10px;"
+>
+
+<button onclick="searchStudent()" style="margin-top:10px;">
+    Search
+</button>
+
+</div><div class="card" style="margin-top:20px;">
+    <h3>👨‍🎓 Recent Students</h3><table id="studentTable">
+    <tr>
+        <th>Name</th>
+        <th>Class</th>
+        <th>Mobile</th>
+    </tr>
+</table>
+
+</div></div>
+<p> WELCOME TO ANKIT COACHING CLASSES SO PLEASE SUPPORT US </p>
+
+<footer class="footer">
+    <p>© 2026 Ankit Coaching Classes</p>
+</footer>
+
+
+<script>
+
+
+fetch("/dashboard-stats")
+.then(res => res.json())
+.then(data => {
+
+    document.getElementById("totalStudents").innerText =
+        data.totalStudents || 0;
+
+    document.getElementById("totalAttendance").innerText =
+        data.totalAttendance || 0;
+
+    document.getElementById("totalPresent").innerText =
+        data.totalPresent || 0;
+
+    document.getElementById("totalAbsent").innerText =
+        data.totalAbsent || 0;
+
+    document.getElementById("totalFeesRecords").innerText =
+        data.totalFeesRecords || 0;
+
+    document.getElementById("totalFeesCollected").innerText =
+        data.totalFeesCollected || 0;
+
+})
+.catch(err => console.log(err));
+
+
+fetch("/students-recent")
+.then(res => res.json())
+.then(data => {
+
+    let table = document.getElementById("studentTable");
+
+    data.forEach(st => {
+
+        table.innerHTML += `
+        <tr>
+            <td>${st.name}</td>
+            <td>${st.student_class || st.class}</td>
+            <td>${st.phone || st.mobile}</td>
+        </tr>
+        `;
+
+    });
+
+})
+.catch(err => console.log(err));
+
+fetch("/today-attendance-stats")
+.then(res => res.json())
+.then(data => {
+
+    document.getElementById("totalToday").innerText =
+        data.totalToday || 0;
+
+    document.getElementById("presentToday").innerText =
+        data.presentToday || 0;
+
+    document.getElementById("absentToday").innerText =
+        data.absentToday || 0;
+
+})
+.catch(err => console.log(err));
+
+function searchStudent() {
+
+    const name =
+        document.getElementById("searchInput").value;
+
+    fetch(`/search-student?name=${name}`)
+    .then(res => res.json())
+    .then(data => {
+
+        let table =
+            document.getElementById("studentTable");
+
+        table.innerHTML = `
+        <tr>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Mobile</th>
+        </tr>
+        `;
+
+        data.forEach(st => {
+
+            table.innerHTML += `
+            <tr>
+                <td>${st.name}</td>
+                <td>${st.student_class}</td>
+                <td>${st.phone}</td>
+            </tr>
+            `;
+
+        });
+
+    })
+    .catch(err => console.log(err));
+
+}
+
+</script></body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Certificate</title>
+
+<link
+rel="stylesheet"
+href="/css/certificate.css">
+
+</head>
+
+<body>
+
+<h1>
+Certificate Generator
+</h1>
+
+<input
+type="number"
+id="studentId"
+placeholder="Enter Student ID">
+
+<button onclick="loadCertificate()">
+Generate
+</button>
+
+<div
+id="certificate"
+class="certificate">
+
+<h2>
+ANKIT COACHING CLASSES
+</h2>
+
+<h3>
+CERTIFICATE OF COMPLETION
+</h3>
+
+<p>
+
+This is to certify that
+
+<b id="studentName">
+Student Name
+</b>
+
+has successfully completed
+the coaching course.
+
+</p>
+
+<p>
+
+Class :
+
+<b id="studentClass">
+-
+</b>
+
+</p>
+
+<p>
+
+Date :
+
+<b id="todayDate">
+-
+</b>
+
+</p>
+
+</div>
+
+<button onclick="window.print()">
+Print Certificate
+</button>
+
+<script>
+
+document.getElementById(
+"todayDate"
+).innerText =
+new Date().toLocaleDateString();
+
+function loadCertificate(){
+
+const id =
+document.getElementById(
+"studentId"
+).value;
+
+fetch(
+`/certificate-data/${id}`
+)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+if(!data.success){
+
+alert(
+"Student Not Found"
+);
+
+return;
+
+}
+
+document.getElementById(
+"studentName"
+).innerText =
+data.student.name;
+
+document.getElementById(
+"studentClass"
+).innerText =
+data.student.student_class;
+
+});
+
+}
+
+</script>
+
+</body>
+
+</html>

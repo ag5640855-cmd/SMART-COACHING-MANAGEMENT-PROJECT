@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Student Identity Card</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#ececec;
+}
+
+.card{
+
+width:340px;
+margin:30px auto;
+
+background:white;
+
+border-radius:15px;
+
+border:3px solid #0d6efd;
+
+padding:15px;
+
+text-align:center;
+
+}
+
+.heading{
+
+font-size:22px;
+font-weight:bold;
+color:#0d6efd;
+
+}
+
+.photo{
+
+width:120px;
+height:120px;
+
+border-radius:50%;
+
+border:2px solid #333;
+
+object-fit:cover;
+
+}
+
+.info{
+
+text-align:left;
+margin-top:15px;
+
+}
+
+button{
+
+margin-top:15px;
+
+padding:10px 20px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="heading">
+
+ANKIT COACHING
+
+</div>
+
+<hr>
+
+<img
+id="photo"
+class="photo"
+src=""
+>
+
+<div class="info">
+
+<p><b>ID :</b> <span id="sid"></span></p>
+
+<p><b>Name :</b> <span id="name"></span></p>
+
+<p><b>Class :</b> <span id="cls"></span></p>
+
+<p><b>Phone :</b> <span id="phone"></span></p>
+
+<p><b>Email :</b> <span id="email"></span></p>
+
+</div>
+
+<button onclick="window.print()">
+
+Print Identity Card
+
+</button>
+
+</div>
+
+<script>
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const id =
+params.get("id");
+
+async function loadCard(){
+
+const res =
+await fetch(
+"/student/"+id
+);
+
+const data =
+await res.json();
+
+if(!data.success){
+
+alert("Student Not Found");
+
+return;
+
+}
+
+const st =
+data.student;
+
+document.getElementById(
+"sid"
+).innerText = st.id;
+
+document.getElementById(
+"name"
+).innerText = st.name;
+
+document.getElementById(
+"cls"
+).innerText = st.student_class;
+
+document.getElementById(
+"phone"
+).innerText = st.phone;
+
+document.getElementById(
+"email"
+).innerText = st.email;
+
+if(st.photo){
+
+document.getElementById(
+"photo"
+).src = st.photo;
+
+}
+
+}
+
+loadCard();
+
+</script>
+
+</body>
+</html>

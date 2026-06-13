@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Results Management</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+}
+
+.header{
+background:#2c3e50;
+color:white;
+padding:15px;
+text-align:center;
+}
+
+.container{
+width:90%;
+max-width:1000px;
+margin:30px auto;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+margin-bottom:20px;
+}
+
+h2{
+margin-top:0;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:1px solid #ccc;
+border-radius:5px;
+box-sizing:border-box;
+}
+
+button{
+padding:12px 20px;
+margin-top:15px;
+background:#3498db;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2980b9;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th{
+background:#3498db;
+color:white;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+.pass{
+color:green;
+font-weight:bold;
+}
+
+.fail{
+color:red;
+font-weight:bold;
+}
+
+#studentResult{
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>Ankit Coaching Classes</h1>
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Add Result</h2>
+
+<input
+type="number"
+id="student_id"
+placeholder="Student ID">
+
+<input
+type="text"
+id="subject"
+placeholder="Subject">
+
+<input
+type="number"
+id="marks"
+placeholder="Obtained Marks">
+
+<input
+type="number"
+id="total_marks"
+placeholder="Total Marks">
+
+<button onclick="saveResult()">
+Save Result
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Search Student Result</h2>
+
+<input
+type="number"
+id="searchStudentId"
+placeholder="Enter Student ID">
+
+<button onclick="searchResult()">
+Search Result
+</button>
+
+<div id="studentResult"></div>
+
+</div>
+
+<div class="card">
+
+<h2>All Results</h2>
+
+<table>
+
+<tr>
+<th>Student ID</th>
+<th>Subject</th>
+<th>Marks</th>
+<th>Total</th>
+<th>Percentage</th>
+<th>Status</th>
+</tr>
+
+<tbody id="resultTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+function loadResults(){
+
+fetch("/results-data")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let rows="";
+
+data.forEach(r=>{
+
+let percentage =
+((r.marks/r.total_marks)*100)
+.toFixed(2);
+
+rows += `
+<tr>
+
+<td>${r.student_id}</td>
+
+<td>${r.subject}</td>
+
+<td>${r.marks}</td>
+
+<td>${r.total_marks}</td>
+
+<td>${percentage}%</td>
+
+<td class="${
+r.result_status==="Pass"
+? "pass"
+: "fail"
+}">
+${r.result_status}
+</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById(
+"resultTable"
+).innerHTML = rows;
+
+});
+
+}
+
+function saveResult(){
+
+fetch("/add-result",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+student_id:
+document.getElementById("student_id").value,
+
+subject:
+document.getElementById("subject").value,
+
+marks:
+document.getElementById("marks").value,
+
+total_marks:
+document.getElementById("total_marks").value
+
+})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+alert(data.message);
+
+loadResults();
+
+});
+
+}
+
+function searchResult(){
+
+const studentId =
+document.getElementById(
+"searchStudentId"
+).value;
+
+fetch("/results-data")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let results =
+data.filter(
+r => r.student_id == studentId
+);
+
+if(results.length===0){
+
+document.getElementById(
+"studentResult"
+).innerHTML =
+"<h3>No Result Found</h3>";
+
+return;
+
+}
+
+let totalMarks=0;
+let obtainedMarks=0;
+
+let html=`
+
+<h3>
+Student ID :
+${studentId}
+</h3>
+
+<table>
+
+<tr>
+<th>Subject</th>
+<th>Marks</th>
+<th>Total</th>
+</tr>
+
+`;
+
+results.forEach(r=>{
+
+obtainedMarks +=
+Number(r.marks);
+
+totalMarks +=
+Number(r.total_marks);
+
+html += `
+<tr>
+
+<td>${r.subject}</td>
+
+<td>${r.marks}</td>
+
+<td>${r.total_marks}</td>
+
+</tr>
+`;
+
+});
+
+let percentage =
+((obtainedMarks/totalMarks)*100)
+.toFixed(2);
+
+html += `
+</table>
+
+<h3>
+Percentage :
+${percentage}%
+</h3>
+`;
+
+if(percentage>=33){
+
+html += `
+<h3 style="color:green;">
+PASS
+</h3>
+`;
+
+}else{
+
+html += `
+<h3 style="color:red;">
+FAIL
+</h3>
+`;
+
+}
+
+html += `
+<button onclick="window.print()">
+Print Result
+</button>
+`;
+
+document.getElementById(
+"studentResult"
+).innerHTML = html;
+
+});
+
+}
+
+loadResults();
+
+</script>
+
+</body>
+</html>

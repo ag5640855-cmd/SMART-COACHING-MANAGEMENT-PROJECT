@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Add Student</title>
+
+<link
+rel="stylesheet"
+href="/css/add-student.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>
+Add Student
+</h1>
+
+<div class="card">
+
+<input
+type="text"
+id="name"
+placeholder="Student Name">
+
+<input
+type="email"
+id="email"
+placeholder="Email">
+
+<input
+type="text"
+id="phone"
+placeholder="Mobile Number">
+
+<input
+type="text"
+id="student_class"
+placeholder="Class">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<input 
+type="file"
+id="photo">
+
+<button onclick="saveStudent()">
+Save Student
+</button>
+
+</div>
+
+</div>
+<script>
+
+function saveStudent(){
+
+const formData =
+new FormData();
+
+formData.append(
+"name",
+document.getElementById("name").value
+);
+
+formData.append(
+"email",
+document.getElementById("email").value
+);
+
+formData.append(
+"phone",
+document.getElementById("phone").value
+);
+
+formData.append(
+"student_class",
+document.getElementById("student_class").value
+);
+
+formData.append(
+"password",
+document.getElementById("password").value
+);
+
+formData.append(
+"photo",
+document.getElementById("photo").files[0]
+);
+
+fetch(
+
+"/save-student",
+
+{
+method:"POST",
+body:formData
+}
+
+)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+alert(data.message);
+
+});
+
+}
+</script>
+
+</body>
+
+</html>

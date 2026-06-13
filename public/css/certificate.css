@@ -1,0 +1,33 @@
+body{
+
+font-family:Arial;
+
+text-align:center;
+
+padding:20px;
+
+}
+
+.certificate{
+
+width:800px;
+
+margin:auto;
+
+border:8px solid #000;
+
+padding:40px;
+
+margin-top:20px;
+
+}
+
+button{
+
+padding:10px 20px;
+
+margin-top:20px;
+
+cursor:pointer;
+
+}

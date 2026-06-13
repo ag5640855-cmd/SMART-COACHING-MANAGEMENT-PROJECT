@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Notes Management</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+}
+
+.header{
+    background:#2c3e50;
+    color:white;
+    text-align:center;
+    padding:15px;
+}
+
+.container{
+    width:90%;
+    max-width:900px;
+    margin:30px auto;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+    margin-bottom:20px;
+}
+
+input,textarea{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+textarea{
+    height:120px;
+}
+
+button{
+    margin-top:15px;
+    padding:12px 20px;
+    background:#3498db;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#2980b9;
+}
+
+.note{
+    border-bottom:1px solid #ddd;
+    padding:10px 0;
+}
+
+.note h3{
+    margin:0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Ankit Coaching Classes</h1>
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Add Notes</h2>
+
+<input
+type="text"
+id="title"
+placeholder="Enter Note Title">
+
+<textarea
+id="description"
+placeholder="Write Notes Here">
+</textarea>
+
+<button onclick="addNote()">
+Save Note
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>All Notes</h2>
+
+<div id="notesList"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function loadNotes(){
+
+fetch("/notes-data")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let html="";
+
+data.forEach(note=>{
+
+html += `
+<div class="note">
+<h3>${note.title}</h3>
+<p>${note.description}</p>
+</div>
+`;
+
+});
+
+document.getElementById("notesList")
+.innerHTML = html;
+
+});
+
+}
+
+function addNote(){
+
+const title =
+document.getElementById("title").value;
+
+const description =
+document.getElementById("description").value;
+
+fetch("/add-note",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+title,
+description
+})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+alert(data.message);
+
+document.getElementById("title").value="";
+document.getElementById("description").value="";
+
+loadNotes();
+
+});
+
+}
+
+loadNotes();
+
+</script>
+
+</body>
+</html>

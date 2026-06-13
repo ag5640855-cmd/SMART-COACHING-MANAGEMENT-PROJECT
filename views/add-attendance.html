@@ -1,0 +1,41 @@
+<!DOCTYPE html><html>
+<head>
+    <title>Add Attendance</title>
+    <link rel="stylesheet" href="/css/attendance.css">
+</head>
+<body><header class="header">
+    <h1>Ankit Coaching Classes</h1>
+</header><div class="container"><h2>Add Attendance</h2>
+
+<form id="attendanceForm">
+
+    <input
+    type="number"
+    id="student_id"
+    placeholder="Student ID"
+    required>
+
+    <br><br>
+
+    <input
+    type="date"
+    id="attendance_date"
+    required>
+
+    <br><br>
+
+    <select id="status">
+        <option value="Present">Present</option>
+        <option value="Absent">Absent</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Save Attendance
+    </button>
+
+</form>
+
+</div><script src="/js/attendance.js"></script></body>
+</html>

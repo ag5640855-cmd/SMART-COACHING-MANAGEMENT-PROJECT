@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Delete Student</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f4f6f9;
+}
+
+.header{
+    background:#2c3e50;
+    color:white;
+    text-align:center;
+    padding:15px;
+}
+
+.container{
+    width:500px;
+    margin:50px auto;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    background:red;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:darkred;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>Ankit Coaching Classes</h1>
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Delete Student</h2>
+
+<input
+type="number"
+id="studentId"
+placeholder="Enter Student ID">
+
+<button onclick="deleteStudent()">
+Delete Student
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function deleteStudent(){
+
+    const id =
+    document.getElementById("studentId").value;
+
+    if(!id){
+        alert("Enter Student ID");
+        return;
+    }
+
+    fetch(`/delete-student/${id}`,{
+
+        method:"DELETE"
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        alert(data.message);
+
+    })
+
+    .catch(err => {
+
+        console.log(err);
+        alert("Delete Failed");
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

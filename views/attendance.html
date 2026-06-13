@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance</title><link rel="stylesheet" href="/css/attendance.css"><style>
+
+.container{
+    width:90%;
+    margin:auto;
+}
+
+h2{
+    text-align:center;
+    margin-top:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    background:#fff;
+}
+
+th{
+    background:#3498db;
+    color:white;
+    padding:12px;
+}
+
+td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+tr:nth-child(even){
+    background:#f2f2f2;
+}
+
+</style></head><body><header class="header">
+    <h1>Ankit Coaching Classes</h1>
+</header><nav class="navbar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/attendance">Attendance</a>
+</nav><div class="container"><h2>Student Attendance Records</h2>
+
+<table>
+
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Student ID</th>
+            <th>Status</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+
+    <tbody id="attendanceData">
+
+    </tbody>
+
+</table>
+
+</div><script>
+
+fetch("/attendance-data")
+.then(response => response.json())
+.then(data => {
+
+    let rows = "";
+
+    data.forEach(item => {
+
+        rows += `
+        <tr>
+            <td>${item.id}</td>
+            <td>${item.student_id}</td>
+            <td>${item.status}</td>
+            <td>${item.date}</td>
+        </tr>
+        `;
+
+    });
+
+    document.getElementById("attendanceData").innerHTML = rows;
+
+})
+.catch(error => {
+
+    console.log("Error:", error);
+
+});
+
+</script></body>
+</html>
