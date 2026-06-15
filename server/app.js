@@ -757,6 +757,16 @@ app.get("/certificate-data/:id", (req, res) => {
 
 });
 
+app.get("/search", (req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+            "../views/search.html"
+        )
+    );
+
+});
 
 
 const PORT = process.env.PORT || 5000;
