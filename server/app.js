@@ -64,9 +64,7 @@ app.use("/api/students", studentRoutes);
 
 app.get("/", (req, res) => {
 
-    res.send(
-        "Smart Coaching Management System Running Successfully"
-    );
+    res.redirect("/login");
 
 });
 
