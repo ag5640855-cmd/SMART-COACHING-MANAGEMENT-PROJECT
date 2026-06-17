@@ -90,7 +90,7 @@ app.get("/login", (req, res) => {
 
 });
 
-app.post("/login", (req, res) => {
+/*app.post("/login", (req, res) => {
 
     const {
         email,
@@ -134,7 +134,31 @@ app.post("/login", (req, res) => {
 
     );
 
+});*/
+app.post("/login", (req, res) => {
+
+    const { email, password } = req.body;
+
+    if (
+        email === "admin@gmail.com" &&
+        password === "123456"
+    ) {
+
+        req.session.user = email;
+
+        return res.json({
+            success: true
+        });
+
+    }
+
+    return res.json({
+        success: false,
+        message: "Invalid Email or Password"
+    });
+
 });
+
 
 app.get("/logout", (req, res) => {
 
