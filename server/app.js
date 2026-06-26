@@ -1,15 +1,12 @@
+
+require("dotenv").config(); 
 console.log("Starting Smart Coaching Management System Server...");
 const express = require("express");
 const app = express();
-
 const path = require("path");
 const db = require("./config/db");
-
 const session = require("express-session");
 const multer = require("multer");
-
-require("dotenv").config();
-
 const studentRoutes = require("./routes/studentRoutes");
 
 app.use(express.json());
@@ -90,7 +87,7 @@ app.get("/login", (req, res) => {
 
 });
 
-/*app.post("/login", (req, res) => {
+app.post("/login", (req, res) => {
 
     const {
         email,
@@ -134,8 +131,9 @@ app.get("/login", (req, res) => {
 
     );
 
-});*/
-app.post("/login", (req, res) => {
+});
+
+/*app.post("/login", (req, res) => {
 
     const { email, password } = req.body;
 
@@ -158,7 +156,7 @@ app.post("/login", (req, res) => {
     });
 
 });
-
+*/
 
 app.get("/logout", (req, res) => {
 
@@ -720,7 +718,7 @@ app.get("/id-card", (req, res) => {
 
 });
 
-app.get("/students-list", (req, res) => {
+/*app.get("/students-list", (req, res) => {
 
     db.query(
         "SELECT * FROM students ORDER BY id DESC",
@@ -738,7 +736,7 @@ app.get("/students-list", (req, res) => {
         }
     );
 
-});
+});*/
 app.get("/certificate", (req, res) => {
 
     res.sendFile(
