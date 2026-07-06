@@ -87,7 +87,7 @@ app.get("/login", (req, res) => {
 
 });
 
-app.post("/login", (req, res) => {
+/*app.post("/login", (req, res) => {
 
     const {
         email,
@@ -131,9 +131,9 @@ app.post("/login", (req, res) => {
 
     );
 
-});
+});*/
 
-/*app.post("/login", (req, res) => {
+app.post("/login", (req, res) => {
 
     const { email, password } = req.body;
 
@@ -156,7 +156,7 @@ app.post("/login", (req, res) => {
     });
 
 });
-*/
+
 
 app.get("/logout", (req, res) => {
 
