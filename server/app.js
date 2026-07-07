@@ -87,8 +87,48 @@ app.get("/login", (req, res) => {
 
 });
 
+app.post("/login", (req, res) => {
 
+    const { email, password } = req.body;
 
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    db.query(
+        "SELECT * FROM users WHERE email=? AND password=?",
+        [email, password],
+        (err, result) => {
+
+            console.log("DB Error:", err);
+            console.log("Result:", result);
+
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: err.message
+                });
+            }
+
+            if (result.length > 0) {
+
+                req.session.user = email;
+
+                return res.json({
+                    success: true
+                });
+
+            }
+
+            return res.json({
+                success: false,
+                message: "Invalid Email or Password"
+            });
+
+        }
+    );
+
+});
+/*
 app.post("/login", (req, res) => {
 
     const {
@@ -134,7 +174,7 @@ app.post("/login", (req, res) => {
     );
 
 });
-
+*/
 /*app.post("/login", (req, res) => {
 
     const { email, password } = req.body;
