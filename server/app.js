@@ -1,6 +1,8 @@
 
 require("dotenv").config(); 
 console.log("Starting Smart Coaching Management System Server...");
+
+const bcrypt = require("bcrypt");
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -8,6 +10,10 @@ const db = require("./config/db");
 const session = require("express-session");
 const multer = require("multer");
 const studentRoutes = require("./routes/studentRoutes");
+const studentAuthRoutes = require("./routes/studentAuthRoutes");
+app.use("/api/students", studentRoutes);
+
+/*app.use("/api/student-auth", studentAuthRoutes);*/
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -65,16 +71,6 @@ app.get("/", (req, res) => {
 
 });
 
-app.get("/register", (req, res) => {
-
-    res.sendFile(
-        path.join(
-            __dirname,
-            "../views/register.html"
-        )
-    );
-
-});
 
 app.get("/login", (req, res) => {
 
@@ -829,6 +825,18 @@ app.get("/search", (req, res) => {
     );
 
 });
+
+
+
+app.get("/register", (req, res) => {
+
+    res.sendFile(
+        path.join(__dirname, "../views/register.html")
+    );
+
+});
+
+
 
 
 const PORT = process.env.PORT || 5000;
