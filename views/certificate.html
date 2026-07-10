@@ -8,6 +8,59 @@
 rel="stylesheet"
 href="/css/certificate.css">
 
+<style>/* Beautiful certificate styling */
+body{
+    font-family: "Times New Roman", serif;
+    background:#f4f4f4;
+    text-align:center;
+    margin:0;
+    padding:20px;
+}
+
+.certificate{
+    width:800px;
+    margin:30px auto;
+    padding:50px;
+    background:#fff;
+    border:15px solid #b8860b;
+    outline:3px solid #d4af37;
+    outline-offset:-12px;
+    box-shadow:0 0 20px rgba(0,0,0,.15);
+    box-sizing:border-box;
+}
+
+.certificate h2{
+    color:#8b6508;
+    margin-bottom:5px;
+}
+
+.certificate h3{
+    letter-spacing:3px;
+    margin-bottom:30px;
+}
+
+@media print{
+    body{
+        background:#fff;
+        padding:0;
+        margin:0;
+    }
+
+    body > *:not(#certificate){
+        display:none !important;
+    }
+
+    #certificate{
+        display:block !important;
+        width:100%;
+        margin:0;
+        box-shadow:none;
+        border-width:10px;
+        page-break-inside:avoid;
+    }
+}</style>
+
+
 </head>
 
 <body>
@@ -30,7 +83,7 @@ id="certificate"
 class="certificate">
 
 <h2>
-ANKIT COACHING CLASSES
+ANKIT STUDY CIRCLE
 </h2>
 
 <h3>
@@ -107,6 +160,54 @@ alert(
 return;
 
 }
+
+
+
+document.getElementById(
+"todayDate"
+).innerText =
+new Date().toLocaleDateString();
+
+function loadCertificate(){
+
+const id =
+document.getElementById(
+"studentId"
+).value;
+
+fetch(
+`/certificate-data/${id}`
+)
+
+.then(res=>res.json())
+
+.then(data=>{
+
+if(!data.success){
+
+alert(
+"Student Not Found"
+);
+
+return;
+
+}
+
+document.getElementById(
+"studentName"
+).innerText =
+data.student.name;
+
+document.getElementById(
+"studentClass"
+).innerText =
+data.student.student_class;
+
+});
+
+}
+
+
 
 document.getElementById(
 "studentName"

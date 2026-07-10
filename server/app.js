@@ -171,7 +171,7 @@ app.post("/login", (req, res) => {
 
 });
 */
-/*app.post("/login", (req, res) => {
+app.post("/login", (req, res) => {
 
     const { email, password } = req.body;
 
@@ -193,7 +193,7 @@ app.post("/login", (req, res) => {
         message: "Invalid Email or Password"
     });
 
-});*/
+});
 
 
 app.get("/logout", (req, res) => {
